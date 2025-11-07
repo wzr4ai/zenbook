@@ -5,7 +5,7 @@
 - **数据库**：PostgreSQL（推荐，支持并发事务和 JSON 字段），兼容 MySQL。
 - **部署**：Uvicorn，建议容器化；使用 uv 管理依赖。
 - **环境变量**：
-  - `DATABASE_URL`：标准 DSN，需启用连接池。
+  - `DATABASE_URL`：标准 DSN，可直接书写 `postgresql://...` 或 `mysql://...`，服务会自动补齐异步驱动。
   - `JWT_SECRET`, `JWT_EXPIRES_IN`, `WECHAT_APPID/SECRET`。
   - `DEFAULT_TIMEZONE`：用于生成时间槽（建议 `Asia/Shanghai`）。
 
