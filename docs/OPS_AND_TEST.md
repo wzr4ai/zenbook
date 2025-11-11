@@ -81,14 +81,14 @@
 | 集成测试 | FastAPI TestClient + 临时 DB | 模块间交互、JWT 权限、预约生命周期 |
 | 合同测试 | Schemathesis / OpenAPI | 确保 API 与 `docs/API.md` 一致 |
 | 前端组件测试 | Vitest + Vue Test Utils | Pinia store、日历/时间槽组件 |
-| 端到端 (E2E) | uni-app 自动化 (或 wdio) + Mock WeChat | 登录→选择服务→下单→取消、管理员手动预约、排班调整 |
+| 端到端 (E2E) | uni-app 自动化 (或 wdio) + Mock WeChat | 登录→选择服务→下单→客户删除、管理员手动预约、排班调整 |
 
 ### 6.1 关键 E2E 用例
 | 用例 ID | 场景 | 检查点 |
 | --- | --- | --- |
 | E2E-01 | 客户登录并绑定就诊人 | Token 写入、Pinia 持久化、患者列表更新 |
 | E2E-02 | 查询可用时间并下单 | 可用时间与后端响应一致、预约成功提示 |
-| E2E-03 | 取消预约 | 状态更新为 `cancelled`，可用时间回补 |
+| E2E-03 | 客户删除预约 | 开始前允许删除（记录移除），可用时间回补 |
 | E2E-04 | 管理员创建预约 | `booked_by_role='admin'`，父亲限额不受影响 |
 | E2E-05 | 滚动批量排班 | 基于未来 7 天批量添加班次并在列表中可见 |
 

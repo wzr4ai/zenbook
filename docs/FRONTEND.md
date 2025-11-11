@@ -80,8 +80,8 @@ export const useUserStore = defineStore('user', {
 | `pages/me` | 个人中心 | “我的”Tab：客户展示资料与常用入口，管理员可切换前端身份 |
 | `pages/booking` | 可用时间日历 | 调用 `scheduleApi.getAvailability`，展示时间槽；点击后设置 `bookingStore.selectedSlot` |
 | `pages/confirm` | 预约确认 | 拉取 `patients`，允许备注；提交 `appointmentsApi.create` |
-| `pages_sub/appointments` | 我的预约 | 展示 `scheduled/completed`，支持下拉刷新 |
-| `pages_sub/appointment_detail` | 取消预约 | 调用 `appointmentsApi.cancel` |
+| `pages_sub/appointments` | 我的预约 | 展示 `scheduled/completed/no_show`，支持下拉刷新 |
+| `pages_sub/appointment_detail` | 删除预约 | 调用 `appointmentsApi.cancel`（DELETE），仅限开始前 |
 | `pages_admin/dashboard` | 全局预约视图 | 显示所有技师、地点；提供快速入口到 `appt_create` |
 | `pages_admin/catalog_mgmt` | CRUD 服务/技师/地点/offerings | 与后端 `/api/v1/admin/catalog/...` 对应 |
 | `pages_admin/schedule_mgmt` | 批量排班 | 管理员按未来 7 天批量创建/编辑班次 |
@@ -104,7 +104,7 @@ export const useUserStore = defineStore('user', {
 - 小程序端需开启“分包异步化”以避免管理端代码阻塞启动。
 - 本地调试统一通过 `HBuilderX CLI`，可在 `package.json` 增加 `scripts` 以调用 `hbx-cli`，便于自动化测试、CI 和联调环境保持一致。
 - 若需在非微信容器中调试登录，可在 `.env.local` 中设置 `VITE_DEV_LOGIN_CODE`，配合后端的 WeChat 模拟服务即可获取稳定的 mock openid。
-- UI/交互测试：建议在 `OPS_AND_TEST.md` 中记录关键路径（登录→预约→取消、管理员手动预约等）。
+- UI/交互测试：建议在 `OPS_AND_TEST.md` 中记录关键路径（登录→预约→客户删除、管理员手动预约/标记等）。
 
 ## 8. 与其他文档的映射
 - API 契约：`docs/API.md`

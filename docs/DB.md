@@ -40,7 +40,7 @@ Offerings (1) ──< Appointments >── (1) Patients
 ### 3.4 预约域
 | 表 | 关键字段 | 备注 |
 | --- | --- | --- |
-| `Appointments` | `appointment_id (ULID, PK)`, `patient_id`, `booked_by_user_id`, `offering_id`, `start_time`, `end_time`, `status`, `booked_by_role`, `price_at_booking`, `notes` | `status` 枚举：`scheduled/completed/cancelled` |
+| `Appointments` | `appointment_id (ULID, PK)`, `patient_id`, `booked_by_user_id`, `offering_id`, `start_time`, `end_time`, `status`, `booked_by_role`, `price_at_booking`, `notes` | `status` 枚举：`scheduled/completed/no_show` |
 
 ## 4. 约束与索引建议
 - `Users.wechat_openid`：唯一索引，保证单账号绑定。

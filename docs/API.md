@@ -59,12 +59,17 @@
 }
 ```
 - **响应**：`{ "appointment_id": "01HPD4XZ6MPTC0N8R1S2T3UVWX", "status": "scheduled" }`
+- **状态含义**：
+  - `scheduled`：待服务。
+  - `completed`：管理员/技师在预约开始后标记完成。
+  - `no_show`：预约开始后由管理员/技师标记违约（爽约）。
 
 #### `GET /appointments/me`
 - 返回当前账户的预约（支持 `status` 过滤）。
 
-#### `POST /appointments/{id}/cancel`
-- 将预约状态置为 `cancelled`，仅允许预约所属账户操作。
+#### `DELETE /appointments/{id}`
+- **权限**：customer
+- **说明**：预约开始前客户可自行删除记录；一旦到达预约时间则返回 `403`，需联系管理员处理。
 
 ## 3. 管理端接口 `/admin`
 > 需 `admin` 或 `technician` 角色；路由建议在 FastAPI 中注册为 `APIRouter(prefix="/api/v1/admin")`。
@@ -83,8 +88,8 @@
 | --- | --- | --- |
 | GET | `/appointments` | 列出全部预约，支持筛选技师/日期/状态 |
 | POST | `/appointments` | 管理员手动添加，`booked_by_role='admin'`，可绕过父亲限额 |
-| PUT | `/appointments/{id}` | 修改预约（时间、状态、备注） |
-| DELETE | `/appointments/{id}` | 删除预约 |
+| PUT | `/appointments/{id}` | 修改预约（时间、备注、状态）。`status` 仅能在预约开始后更新为 `completed` 或 `no_show` |
+| DELETE | `/appointments/{id}` | 删除预约，管理员/技师可在任何时间执行 |
 
 ### 3.4 用户与就诊人
 - `GET /users`：查看全部账户
