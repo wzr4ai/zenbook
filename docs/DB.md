@@ -35,7 +35,7 @@ Offerings (1) ──< Appointments >── (1) Patients
 ### 3.3 排班域
 | 表 | 关键字段 | 备注 |
 | --- | --- | --- |
-| `BusinessHours` | `rule_id (ULID, PK)`, `technician_id`, `location_id`, `day_of_week`, `start_time`, `end_time` | 周期性排班规则 |
+| `BusinessHours` | `rule_id (ULID, PK)`, `technician_id`, `location_id`, `day_of_week (monday~sunday)`, `start_time`, `end_time` | 周期性排班规则 |
 | `ScheduleExceptions` | `exception_id (ULID, PK)`, `technician_id`, `location_id`, `date`, `is_available`, `start_time`, `end_time` | 例外优先级高于常规规则 |
 
 ### 3.4 预约域
@@ -47,7 +47,7 @@ Offerings (1) ──< Appointments >── (1) Patients
 - `Users.wechat_openid`：唯一索引，保证单账号绑定。
 - `Patients (managed_by_user_id, name)`：唯一索引，避免重复就诊人。
 - `Offerings`：唯一索引 `(technician_id, service_id, location_id)`，确保同一组合只有一条定价策略；可增加 `is_available` 过滤索引。
-- `BusinessHours`：唯一索引 `(technician_id, location_id, day_of_week, start_time)`。
+- `BusinessHours`：唯一索引 `(technician_id, location_id, day_of_week, start_time)`，其中 `day_of_week` 直接存储 `monday`~`sunday`。
 - `ScheduleExceptions`：唯一索引 `(technician_id, location_id, date)`。
 - `Appointments`：组合索引 `(technician_id via offering, start_time)` 以加速可用时间查询；在实现层可通过物化视图/缓存。
 

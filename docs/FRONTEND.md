@@ -40,15 +40,23 @@
 ```ts
 // store/user.ts
 export const useUserStore = defineStore('user', {
-  state: () => ({ token: '', userInfo: null }),
+  state: () => ({ token: '', userInfo: null, impersonateRole: '' }),
+  getters: {
+    viewRole: (state) => state.impersonateRole || state.userInfo?.role || 'customer',
+    hasStaffAccess: (state) => ['admin','technician'].includes(state.userInfo?.role ?? ''),
+  },
   actions: {
     async login() {
       const { code } = await uni.login();
       const data = await authApi.login({ code });
       this.token = data.token;
       this.userInfo = data.userInfo; // 必须包含 role
+      this.impersonateRole = '';
     },
-    logout() { this.$reset(); }
+    setImpersonateRole(role: string) {
+      if (this.userInfo?.role === 'admin') this.impersonateRole = role;
+    },
+    logout() { this.$reset(); },
   },
 });
 ```
@@ -59,13 +67,14 @@ export const useUserStore = defineStore('user', {
 
 ### 3.3 路由守卫
 - `pages_admin` 中的所有页面路径注册到 `adminPages` 列表。
-- 在 `main.js` 中使用 `uni.addInterceptor('navigateTo', ...)` 判断 `userStore.userInfo.role`，未授权时阻断并 toast。
-- “管理员入口”建议放在 `pages_sub/profile/index.vue` 中，通过 `v-if` 渲染“进入管理后台”按钮。
+- 在 `main.js` 中使用 `uni.addInterceptor('navigateTo', ...)` 判断 `userStore.hasStaffAccess`（真实权限），未授权时阻断并 toast。
+- Tab 第二页 `pages/me` 中提供管理员身份切换按钮，仅影响前端展示，后端权限仍依赖真实角色。
 
 ## 4. 核心页面交互
 | 页面 | 功能点 | 说明 |
 | --- | --- | --- |
-| `pages/index` | 选择地点/技师/服务 | 调用 `catalog` API，完成级联；选择后跳转 `booking` |
+| `pages/index` | 选择地点/技师/服务 或 管理面板 | 客户视角调用 `catalog` API；管理员/技师视角展示预约管理快捷入口 |
+| `pages/me` | 个人中心 | “我的”Tab：客户展示资料与常用入口，管理员可切换前端身份 |
 | `pages/booking` | 可用时间日历 | 调用 `scheduleApi.getAvailability`，展示时间槽；点击后设置 `bookingStore.selectedSlot` |
 | `pages/confirm` | 预约确认 | 拉取 `patients`，允许备注；提交 `appointmentsApi.create` |
 | `pages_sub/appointments` | 我的预约 | 展示 `scheduled/completed`，支持下拉刷新 |
@@ -91,6 +100,7 @@ export const useUserStore = defineStore('user', {
 - 在 `pages.json` 中将管理功能放进单独分包，减少客户首屏包体。
 - 小程序端需开启“分包异步化”以避免管理端代码阻塞启动。
 - 本地调试统一通过 `HBuilderX CLI`，可在 `package.json` 增加 `scripts` 以调用 `hbx-cli`，便于自动化测试、CI 和联调环境保持一致。
+- 若需在非微信容器中调试登录，可在 `.env.local` 中设置 `VITE_DEV_LOGIN_CODE`，配合后端的 WeChat 模拟服务即可获取稳定的 mock openid。
 - UI/交互测试：建议在 `OPS_AND_TEST.md` 中记录关键路径（登录→预约→取消、管理员手动预约等）。
 
 ## 8. 与其他文档的映射

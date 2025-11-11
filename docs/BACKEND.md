@@ -39,7 +39,7 @@
 ## 4. 核心业务流程
 ### 4.1 可用时间计算 (`GET /schedule/availability`)
 1. 读取 Offerings（技师/服务/地点）与 duration。
-2. 拉取当天 `BusinessHours`，按 `day_of_week` 生成初始时间块。
+2. 拉取当天 `BusinessHours`，按 `day_of_week`（直接存储 `monday`~`sunday`）生成初始时间块。
 3. 应用 `ScheduleExceptions`（覆盖/禁用）。
 4. 查询该技师当天相关 `Appointments`，按 `status='scheduled'` 排除。
 5. 根据 `Services.concurrency_level` 判断是否可叠加；单线程服务需确保无 overlap。
