@@ -29,13 +29,17 @@
 | PUT | `/users/patients/{id}` | customer | 编辑就诊人 |
 | DELETE | `/users/patients/{id}` | customer | 删除就诊人 |
 
+> `/users/me` 额外返回 `default_location_id` 字段，用于记录客户最近一次完成预约时的地点，前端可据此预填城市/门店。
+
 ### 2.2 服务目录 `/catalog`（公开）
 | 方法 | 路径 | 描述 |
 | --- | --- | --- |
 | GET | `/catalog/locations` | 地点列表 |
 | GET | `/catalog/technicians` | 技师列表（含简介、头像） |
-| GET | `/catalog/services` | 服务列表（含默认时长/并发） |
+| GET | `/catalog/services` | 服务列表（含默认时长/并发/权重） |
 | GET | `/catalog/offerings` | 技师+服务+地点组合及价格/时长 |
+
+> 服务对象新增 `weight` 字段，数值越大越靠前，前端会在无选择时默认取权重最高的服务。
 
 ### 2.3 排班与预约
 #### `GET /schedule/availability`
@@ -63,6 +67,7 @@
   - `scheduled`：待服务。
   - `completed`：管理员/技师在预约开始后标记完成。
   - `no_show`：预约开始后由管理员/技师标记违约（爽约）。
+- **地点偏好**：若本次预约的地点与账户 `default_location_id` 不一致，创建成功后系统会自动写入新的地点，供下次进入预约页时默认选中。
 
 #### `GET /appointments/me`
 - 返回当前账户的预约（支持 `status` 过滤）。

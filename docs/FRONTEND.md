@@ -76,7 +76,7 @@ export const useUserStore = defineStore('user', {
 ## 4. 核心页面交互
 | 页面 | 功能点 | 说明 |
 | --- | --- | --- |
-| `pages/index` | 选择地点/技师/服务 或 管理面板 | 客户视角调用 `catalog` API；管理员/技师视角展示预约管理快捷入口 |
+| `pages/index` | 选择地点/技师/服务 或 管理面板 | 客户视角调用 `catalog` API，并优先选中账户 `default_location_id` 对应地点及权重最高的服务；管理员/技师视角展示预约管理快捷入口 |
 | `pages/me` | 个人中心 | “我的”Tab：客户展示资料与常用入口，管理员可切换前端身份 |
 | `pages/booking` | 可用时间日历 | 调用 `scheduleApi.getAvailability`，展示时间槽；点击后设置 `bookingStore.selectedSlot` |
 | `pages/confirm` | 预约确认 | 拉取 `patients`，允许备注；提交 `appointmentsApi.create` |

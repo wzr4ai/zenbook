@@ -21,7 +21,7 @@ Offerings (1) ──< Appointments >── (1) Patients
 ### 3.1 用户域
 | 表 | 关键字段 | 备注 |
 | --- | --- | --- |
-| `Users` | `user_id (ULID, PK)`, `wechat_openid (Unique)`, `role (Enum)` | 角色：`customer`, `technician`, `admin` |
+| `Users` | `user_id (ULID, PK)`, `wechat_openid (Unique)`, `role (Enum)`, `default_location_id (FK Locations)` | 记录客户最近预约的地点，进入预约页时作为默认值 |
 | `Patients` | `patient_id (ULID, PK)`, `managed_by_user_id (FK Users)` | 允许同一账户管理多位就诊人 |
 | `Technicians` | `technician_id (ULID, PK)`, `user_id (FK Users)`, `display_name`, `is_active` | `user_id` 可为空（便于仅供展示） |
 
@@ -29,7 +29,7 @@ Offerings (1) ──< Appointments >── (1) Patients
 | 表 | 关键字段 | 备注 |
 | --- | --- | --- |
 | `Locations` | `location_id (ULID, PK)`, `name`, `address` | 可扩展城市或门店 |
-| `Services` | `service_id (ULID, PK)`, `name`, `default_duration`, `concurrency_level` | `concurrency_level=1` 表示锁死服务 |
+| `Services` | `service_id (ULID, PK)`, `name`, `default_duration`, `concurrency_level`, `weight` | `weight` 越大，前端默认展示越靠前，默认 0 |
 | `Offerings` | `offering_id (ULID, PK)`, `technician_id`, `service_id`, `location_id`, `price`, `duration`, `is_available` | duration 可覆盖 `default_duration` |
 
 ### 3.3 排班域
