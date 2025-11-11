@@ -56,7 +56,10 @@ export const useUserStore = defineStore('user', {
     setImpersonateRole(role: string) {
       if (this.userInfo?.role === 'admin') this.impersonateRole = role;
     },
-    logout() { this.$reset(); },
+    async updateDisplayName(name: string) {
+      await usersApi.updateProfile({ display_name: name });
+      await this.hydrateProfile();
+    },
   },
 });
 ```

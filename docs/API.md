@@ -23,6 +23,7 @@
 | 方法 | 路径 | 权限 | 功能 |
 | --- | --- | --- | --- |
 | GET | `/users/me` | customer | 获取登录账户信息 |
+| PATCH | `/users/me` | customer | 更新昵称等资料 |
 | GET | `/users/patients` | customer | 列出当前账户的就诊人 |
 | POST | `/users/patients` | customer | 新增就诊人 |
 | PUT | `/users/patients/{id}` | customer | 编辑就诊人 |
