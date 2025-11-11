@@ -11,7 +11,7 @@
 Users (1) ──< Patients
 Users (1) ──< Technicians
 Technicians (1) ──< Offerings >── (1) Services
-Offerings (N) ── BusinessHours / ScheduleExceptions (按 technician+location)
+Offerings (N) ── BusinessHours (按 technician+location)
 Offerings (1) ──< Appointments >── (1) Patients
 ```
 > `Offerings` 将技师、服务、地点三者绑定，是价格与时长的唯一来源；预约只引用 `offering_id`。
@@ -36,7 +36,6 @@ Offerings (1) ──< Appointments >── (1) Patients
 | 表 | 关键字段 | 备注 |
 | --- | --- | --- |
 | `BusinessHours` | `rule_id (ULID, PK)`, `technician_id`, `location_id`, `day_of_week (monday~sunday)`, `start_time`, `end_time` | 周期性排班规则 |
-| `ScheduleExceptions` | `exception_id (ULID, PK)`, `technician_id`, `location_id`, `date`, `is_available`, `start_time`, `end_time` | 例外优先级高于常规规则 |
 
 ### 3.4 预约域
 | 表 | 关键字段 | 备注 |
@@ -48,7 +47,6 @@ Offerings (1) ──< Appointments >── (1) Patients
 - `Patients (managed_by_user_id, name)`：唯一索引，避免重复就诊人。
 - `Offerings`：唯一索引 `(technician_id, service_id, location_id)`，确保同一组合只有一条定价策略；可增加 `is_available` 过滤索引。
 - `BusinessHours`：唯一索引 `(technician_id, location_id, day_of_week, start_time)`，其中 `day_of_week` 直接存储 `monday`~`sunday`。
-- `ScheduleExceptions`：唯一索引 `(technician_id, location_id, date)`。
 - `Appointments`：组合索引 `(technician_id via offering, start_time)` 以加速可用时间查询；在实现层可通过物化视图/缓存。
 
 ## 5. 关键约束逻辑

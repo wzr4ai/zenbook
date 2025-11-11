@@ -81,7 +81,7 @@ export const useUserStore = defineStore('user', {
 | `pages_sub/appointment_detail` | 取消预约 | 调用 `appointmentsApi.cancel` |
 | `pages_admin/dashboard` | 全局预约视图 | 显示所有技师、地点；提供快速入口到 `appt_create` |
 | `pages_admin/catalog_mgmt` | CRUD 服务/技师/地点/offerings | 与后端 `/api/v1/admin/catalog/...` 对应 |
-| `pages_admin/schedule_mgmt` | 排班与例外 | 可视化周历 + 临时例外表单 |
+| `pages_admin/schedule_mgmt` | 批量排班 | 管理员按未来 7 天批量创建/编辑班次 |
 
 ## 5. API 封装
 - `api/request.js`：

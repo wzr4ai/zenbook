@@ -21,7 +21,7 @@
       ├─ auth/          # 登录/Token 刷新
       ├─ users/         # 用户 & 就诊人 CRUD
       ├─ catalog/       # 技师/服务/地点/定价
-      ├─ schedule/      # 常规排班与例外、可用时间计算
+      ├─ schedule/      # 常规排班与可用时间计算
       └─ appointments/  # 客户/管理员预约、状态流转
 ```
 
@@ -31,7 +31,7 @@
 | `auth` | Users | 微信 code 换 token、JWT 验证 | 统一鉴权中间件 |
 | `users` | Users, Patients | 我的账户、就诊人 CRUD、管理员查看全部 | 绑定 managed_by_user_id |
 | `catalog` | Technicians, Locations, Services, Offerings | 公开查询 + 管理端 CRUD | price/duration 源 |
-| `schedule` | BusinessHours, ScheduleExceptions | 可用时间、排班 CRUD | 处理并发/例外 |
+| `schedule` | BusinessHours | 可用时间、排班 CRUD | 处理并发/限额 |
 | `appointments` | Appointments (+ Offerings/Patients join) | 客户预约/撤销、管理员增删改 | 维护 `booked_by_role` 逻辑 |
 
 所有模块通过 `router = APIRouter(prefix="/api/v1/...")` 暴露接口，统一在 `main.py` 注册。管理端路由放在 `/api/v1/admin/...`，在依赖中校验 `role in {'admin','technician'}`。
@@ -40,7 +40,7 @@
 ### 4.1 可用时间计算 (`GET /schedule/availability`)
 1. 读取 Offerings（技师/服务/地点）与 duration。
 2. 拉取当天 `BusinessHours`，按 `day_of_week`（直接存储 `monday`~`sunday`）生成初始时间块。
-3. 应用 `ScheduleExceptions`（覆盖/禁用）。
+3. 按配置的 BusinessHours 生成时间块（后续由配额和预约冲突裁剪）。
 4. 查询该技师当天相关 `Appointments`，按 `status='scheduled'` 排除。
 5. 根据 `Services.concurrency_level` 判断是否可叠加；单线程服务需确保无 overlap。
 6. 若目标技师为“父亲”，统计 `Appointments` 中 `booked_by_role='customer'` 且在本周/当日的数量，超限则返回空集合。

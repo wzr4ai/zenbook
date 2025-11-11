@@ -76,7 +76,6 @@
 
 ### 3.2 排班管理 `/schedule`
 - `(CRUD) /schedule/business-hours`
-- `(CRUD) /schedule/exceptions`
 
 ### 3.3 预约管理 `/appointments`
 | 方法 | 路径 | 功能 |
