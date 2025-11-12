@@ -78,7 +78,7 @@ export const useUserStore = defineStore('user', {
 | --- | --- | --- |
 | `pages/index` | 选择地点/技师/服务 或 管理面板 | 客户视角调用 `catalog` API，并优先选中账户 `default_location_id` 对应地点及权重最高的服务；管理员/技师视角展示预约管理快捷入口 |
 | `pages/me` | 个人中心 | “我的”Tab：客户展示资料与常用入口，管理员可切换前端身份 |
-| `pages/booking` | 可用时间日历 | 调用 `scheduleApi.getAvailability`，展示时间槽；点击后设置 `bookingStore.selectedSlot` |
+| `pages/booking` | 可用时间日历 | 调用 `scheduleApi.getAvailability`，展示时间槽；`reason` 非空的时段需灰显并标记“不可用”；点击后设置 `bookingStore.selectedSlot` |
 | `pages/confirm` | 预约确认 | 拉取 `patients`，允许备注；提交 `appointmentsApi.create` |
 | `pages_sub/appointments` | 我的预约 | 展示 `scheduled/completed/no_show`，支持下拉刷新 |
 | `pages_sub/appointment_detail` | 删除预约 | 调用 `appointmentsApi.cancel`（DELETE），仅限开始前 |

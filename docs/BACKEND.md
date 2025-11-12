@@ -44,6 +44,7 @@
 4. 查询该技师当天相关 `Appointments`，按 `status='scheduled'` 排除。
 5. 根据 `Services.concurrency_level` 判断是否可叠加；单线程服务需确保无 overlap。
 6. 若目标技师为“父亲”，统计 `Appointments` 中 `booked_by_role='customer'` 且在本周/当日的数量，超限则返回空集合。
+7. 返回全部时间槽，并在被配额或预约冲突挡住时写入 `reason` 字段（例如“客户配额已满”“已被预约”），供前端灰显显示。
 
 ### 4.2 客户预约 (`POST /appointments`)
 1. 校验 JWT，确认 `role = customer`。
