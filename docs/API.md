@@ -19,15 +19,15 @@
 
 ## 2. 客户端接口
 
-### 2.1 用户与就诊人 `/users`
+### 2.1 用户与顾客 `/users`
 | 方法 | 路径 | 权限 | 功能 |
 | --- | --- | --- | --- |
 | GET | `/users/me` | customer | 获取登录账户信息 |
 | PATCH | `/users/me` | customer | 更新昵称等资料 |
-| GET | `/users/patients` | customer | 列出当前账户的就诊人 |
-| POST | `/users/patients` | customer | 新增就诊人 |
-| PUT | `/users/patients/{id}` | customer | 编辑就诊人 |
-| DELETE | `/users/patients/{id}` | customer | 删除就诊人 |
+| GET | `/users/patients` | customer | 列出当前账户的顾客 |
+| POST | `/users/patients` | customer | 新增顾客 |
+| PUT | `/users/patients/{id}` | customer | 编辑顾客 |
+| DELETE | `/users/patients/{id}` | customer | 删除顾客 |
 
 > `/users/me` 额外返回 `default_location_id` 字段，用于记录客户最近一次完成预约时的地点，前端可据此预填城市/门店。
 
@@ -103,9 +103,9 @@
 | PUT | `/appointments/{id}` | 修改预约（时间、备注、状态）。`status` 仅能在预约开始后更新为 `completed` 或 `no_show` |
 | DELETE | `/appointments/{id}` | 删除预约，管理员/技师可在任何时间执行 |
 
-### 3.4 用户与就诊人
+### 3.4 用户与顾客
 - `GET /users`：查看全部账户
-- `GET /patients`：查看全部就诊人
+- `GET /patients`：查看全部顾客
 
 ## 4. 错误码约定
 | 状态码 | 场景 | 说明 |
@@ -114,7 +114,7 @@
 | 401 | 未登录或 token 失效 | 前端需触发重新登录 |
 | 403 | 权限不足 | 客户访问管理接口 |
 | 409 | 业务冲突 | 时间槽被占用、父亲限额已满 |
-| 422 | 语义校验失败 | 就诊人与账户不匹配 |
+| 422 | 语义校验失败 | 顾客与账户不匹配 |
 
 ## 5. 版本与扩展
 - 未来迭代可将客户端接口迁移至 `/api/v2`，新增队列/排班 AI 推荐等功能。

@@ -19,7 +19,7 @@
    ├─ shared/           # 工具、常量、基础 schema（分页、响应包装）
    └─ modules/
       ├─ auth/          # 登录/Token 刷新
-      ├─ users/         # 用户 & 就诊人 CRUD
+      ├─ users/         # 用户 & 顾客 CRUD
       ├─ catalog/       # 技师/服务/地点/定价
       ├─ schedule/      # 常规排班与可用时间计算
       └─ appointments/  # 客户/管理员预约、状态流转
@@ -29,7 +29,7 @@
 | 模块 | 主要模型 | 公开服务 | 侧重 |
 | --- | --- | --- | --- |
 | `auth` | Users | 微信 code 换 token、JWT 验证 | 统一鉴权中间件 |
-| `users` | Users, Patients | 我的账户、就诊人 CRUD、管理员查看全部 | 绑定 managed_by_user_id，并在预约成功时更新 `default_location_id` 供前端默认选址 |
+| `users` | Users, Patients | 我的账户、顾客 CRUD、管理员查看全部 | 绑定 managed_by_user_id，并在预约成功时更新 `default_location_id` 供前端默认选址 |
 | `catalog` | Technicians, Locations, Services, Offerings | 公开查询 + 管理端 CRUD | price/duration 源 |
 | `schedule` | BusinessHours | 可用时间、排班 CRUD | 处理并发/限额 |
 | `appointments` | Appointments (+ Offerings/Patients join) | 客户预约/撤销、管理员增删改 | 维护 `booked_by_role` 逻辑 |

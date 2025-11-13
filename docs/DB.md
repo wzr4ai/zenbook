@@ -22,7 +22,7 @@ Offerings (1) ──< Appointments >── (1) Patients
 | 表 | 关键字段 | 备注 |
 | --- | --- | --- |
 | `Users` | `user_id (ULID, PK)`, `wechat_openid (Unique)`, `role (Enum)`, `default_location_id (FK Locations)` | 记录客户最近预约的地点，进入预约页时作为默认值 |
-| `Patients` | `patient_id (ULID, PK)`, `managed_by_user_id (FK Users)` | 允许同一账户管理多位就诊人 |
+| `Patients` | `patient_id (ULID, PK)`, `managed_by_user_id (FK Users)` | 允许同一账户管理多位顾客 |
 | `Technicians` | `technician_id (ULID, PK)`, `user_id (FK Users)`, `display_name`, `is_active` | `user_id` 可为空（便于仅供展示） |
 
 ### 3.2 服务目录域
@@ -44,7 +44,7 @@ Offerings (1) ──< Appointments >── (1) Patients
 
 ## 4. 约束与索引建议
 - `Users.wechat_openid`：唯一索引，保证单账号绑定。
-- `Patients (managed_by_user_id, name)`：唯一索引，避免重复就诊人。
+- `Patients (managed_by_user_id, name)`：唯一索引，避免重复顾客。
 - `Offerings`：唯一索引 `(technician_id, service_id, location_id)`，确保同一组合只有一条定价策略；可增加 `is_available` 过滤索引。
 - `BusinessHours`：唯一索引 `(technician_id, location_id, day_of_week, start_time)`，其中 `day_of_week` 直接存储 `monday`~`sunday`。
 - `Appointments`：组合索引 `(technician_id via offering, start_time)` 以加速可用时间查询；在实现层可通过物化视图/缓存。

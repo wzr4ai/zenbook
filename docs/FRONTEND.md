@@ -13,10 +13,10 @@
 ├─ pages/          # 客户主包（预约核心链路）
 │  ├─ index/       # F-06 入口（地点/技师/服务选择）
 │  ├─ booking/     # F-07 可用时间日历
-│  └─ confirm/     # F-08 预约确认（就诊人、备注）
+│  └─ confirm/     # F-08 预约确认（顾客、备注）
 ├─ pages_sub/      # 客户分包（低频）
 │  ├─ profile/     # F-01 登录/资料
-│  ├─ patients/    # F-02 就诊人管理
+│  ├─ patients/    # F-02 顾客管理
 │  ├─ appointments/# F-09 预约列表 + 详情 (含 F-10 取消)
 │  └─ appointment_detail/
 ├─ pages_admin/    # 管理分包（B-01 ~ B-12）
