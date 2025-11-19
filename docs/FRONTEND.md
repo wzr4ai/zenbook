@@ -70,7 +70,7 @@ export const useUserStore = defineStore('user', {
 });
 ```
 
-在 H5 模式下会读取 `constants/platform.ts` 中导出的 `isH5Platform`，`pages/me` 会渲染手机号输入并调用 `userStore.loginWithPhone`，同时保留微信授权按钮以便用户选择。为了避免在不支持 `uni.login` 的 Web 环境中自动发起微信登录，`userStore.autoLogin` 仅在非 H5 目标中调用 `uni.login`/`authApi.login`，而 H5 端则依赖持久化的 token 或用户手动触发登录。  
+在 H5 模式下会读取 `constants/platform.ts` 中导出的 `isH5Platform`，`pages/me` 会渲染手机号输入、验证码输入以及验证码按钮，并调用 `userStore.loginWithPhone`，同时保留微信授权按钮以便用户选择。H5 端必须先通过 `userStore.requestPhoneCode`（触发 `/auth/sms`）获取一次性验证码，再将手机号和 code 一起提交给 `/auth/login/phone`。为便于用户手动切换账号，H5 已增加 “退出登录” 按钮。为了避免在不支持 `uni.login` 的 Web 环境中自动发起微信登录，`userStore.autoLogin` 仅在非 H5 目标中调用 `uni.login`/`authApi.login`，而 H5 端则依赖持久化的 token 或用户手动触发登录。  
 
 ### 3.2 Booking Store
 - 暂存 `selectedLocation`, `selectedTechnician`, `selectedService`, `selectedDate`, `selectedSlot`, `selectedPatientId`。

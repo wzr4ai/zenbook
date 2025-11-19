@@ -30,13 +30,13 @@
 ## 3. 模块职责与 API 边界
 | 模块 | 主要模型 | 公开服务 | 侧重 |
 | --- | --- | --- | --- |
-| `auth` | Users | 微信 code 换 token、JWT 验证 | 统一鉴权中间件 |
+| `auth` | Users | 微信 code 换 token + 手机验证码登录 | `/auth/sms` 生成验证码，`/auth/login` / `/auth/login/phone` 签发 JWT |
 | `users` | Users, Patients | 我的账户、顾客 CRUD、管理员查看全部 | 绑定 managed_by_user_id，并在预约成功时更新 `default_location_id` 供前端默认选址 |
 | `catalog` | Technicians, Locations, Services, Offerings | 公开查询 + 管理端 CRUD | price/duration 源 |
 | `schedule` | BusinessHours | 可用时间、排班 CRUD | 处理并发/限额 |
 | `appointments` | Appointments (+ Offerings/Patients join) | 客户预约/撤销、管理员增删改 | 维护 `booked_by_role` 逻辑 |
 
-- `auth` 模块也提供 `/auth/login/phone` 供 H5 客户端提交手机号（可选短信验证码）获取 JWT，因此 `User.wechat_openid` 被设计为可空，允许非微信账号登录。
+- `auth` 模块通过 `/auth/sms` 生成一次性验证码，`/auth/login/phone` 在验证后签发 JWT，手机号注册的账户会以 `wechat_openid='phone:<number>'` 形式存储以区别于微信登录。
 
 所有模块通过 `router = APIRouter(prefix="/api/v1/...")` 暴露接口，统一在 `main.py` 注册。管理端路由放在 `/api/v1/admin/...`，在依赖中校验 `role in {'admin','technician'}`。
 
