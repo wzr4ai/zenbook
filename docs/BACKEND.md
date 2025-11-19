@@ -8,6 +8,8 @@
   - `DATABASE_URL`：标准 DSN，可直接书写 `postgresql://...` 或 `mysql://...`，服务会自动补齐异步驱动。
   - `JWT_SECRET`, `JWT_EXPIRES_IN`, `WECHAT_APPID/SECRET`。
   - `DEFAULT_TIMEZONE`：用于生成时间槽（建议 `Asia/Shanghai`）。
+  - `FATHER_CUSTOMER_MORNING_QUOTA` / `FATHER_CUSTOMER_AFTERNOON_QUOTA`：父亲类技师对客户的每日最大预约次数。
+  - `CORS_ALLOWED_ORIGINS`：逗号或 JSON 列表格式的域名白名单，H5/Web 打包需设置，默认 `["*"]`。
 
 ## 2. 项目结构（`backend/`）
 ```
