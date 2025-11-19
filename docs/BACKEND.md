@@ -34,6 +34,8 @@
 | `schedule` | BusinessHours | 可用时间、排班 CRUD | 处理并发/限额 |
 | `appointments` | Appointments (+ Offerings/Patients join) | 客户预约/撤销、管理员增删改 | 维护 `booked_by_role` 逻辑 |
 
+- `auth` 模块也提供 `/auth/login/phone` 供 H5 客户端提交手机号（可选短信验证码）获取 JWT，因此 `User.wechat_openid` 被设计为可空，允许非微信账号登录。
+
 所有模块通过 `router = APIRouter(prefix="/api/v1/...")` 暴露接口，统一在 `main.py` 注册。管理端路由放在 `/api/v1/admin/...`，在依赖中校验 `role in {'admin','technician'}`。
 
 ## 4. 核心业务流程
